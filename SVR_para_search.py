@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.svm import SVR
 from sklearn.metrics import r2_score,mean_absolute_error,mean_squared_error
 from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
 from sklearn.externals import joblib
 
@@ -36,25 +37,27 @@ def corr(df,thre):
             corr1.append(corr.index(i))
     return corr1
 ''''''''''''''''''''''''
-'''导入数据集'''
+'''合并数据集'''
 ''''''''''''''''''''''''
-x=df.iloc[:,corr1]
-y=df.iloc[:,-1].tolist()
-y=[y[i]/17.1for i in range(len(y))]
-y=pd.DataFrame(y)
-x=x.reset_index(drop=True)
-y=y.reset_index(drop=True)
-X=pd.concat([x,y],axis=1)
+def concat(df):
+    x=df.iloc[:,corr1]
+    y=df.iloc[:,-1].tolist()
+    y=[y[i]/17.1for i in range(len(y))]
+    y=pd.DataFrame(y)
+    x=x.reset_index(drop=True)
+    y=y.reset_index(drop=True)
+    X=pd.concat([x,y],axis=1)
+    return X#觉得train_test_split 函数需要先固定好数据，因此用concat重新组合一下。
 ''''''''''''''''''''''''
 '''设置训练集测试集'''
 ''''''''''''''''''''''''
-from sklearn.model_selection import train_test_split
-train,test=train_test_split(X,test_size=0.3)
-train_x=train.iloc[:,:-1]
-train_y=train.iloc[:,-1]
-test_x=test.iloc[:,:-1]
-test_y=test.iloc[:,-1].to_list()
-import joblib
+def Train_test_split(X)
+    train,test=train_test_split(X,test_size=0.3)
+    train_x=train.iloc[:,:-1]
+    train_y=train.iloc[:,-1]
+    test_x=test.iloc[:,:-1]
+    test_y=test.iloc[:,-1].to_list()
+    return train_x,train_y,test_x,test_y
 
 '''''''''''''''model select'''''''''''''''
 from sklearn.ensemble import RandomForestRegressor
