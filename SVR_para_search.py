@@ -7,28 +7,34 @@ from sklearn.decomposition import PCA
 from sklearn.externals import joblib
 
 ''''导入数据集'''
-df2=pd.read_excel(filepath1,index_col=0)#导入自己的数据即可。方式可能有变化，具体查询pandas.
-df1=pd.read_excel(filepath2,index_col=0)
-df=pd.concat([df2,df1],axis=0)
-#df=pd.read_excel('d:/xinxi/fubu3.xlsx')
-
+def df_data(filepath1,filepath2):
+    df2=pd.read_excel(filepath1,index_col=0)#导入自己的数据即可。方式可能有变化，具体查询pandas.
+    df1=pd.read_excel(filepath2,index_col=0)
+    df=pd.concat([df2,df1],axis=0)
+    #df=pd.read_excel('d:/xinxi/fubu3.xlsx')
+    return df
+   
 #''''''''''''''''''''''''
 #'''PCA主成分分析'''
 #''''''''''''''''''''''''
-#x=df.iloc[:,:-1]
-#pca=PCA(n_components=13)
-#x=pd.DataFrame(pca.fit_transform(x))
+def pca_data(df,n):
+    x=df.iloc[:,:-1]
+    pca=PCA(n_components=n)
+    x=pd.DataFrame(pca.fit_transform(x))
+    return x
 ''''''''''''''''''''''''
 '''检测相关性'''
 ''''''''''''''''''''''''
-corr=[]
-corr1=[]
-for i in range(df.shape[1]-1):
-    corr.append(np.corrcoef(df.iloc[:,i],df.iloc[:,-1])[1][0])
+def corr(df,thre):
+    corr=[]
+    corr1=[]
+    for i in range(df.shape[1]-1):
+        corr.append(np.corrcoef(df.iloc[:,i],df.iloc[:,-1])[1][0])
 
-for i in corr:
-    if abs(i)>0.20:
-        corr1.append(corr.index(i))
+    for i in corr:
+        if abs(i)>thre:
+            corr1.append(corr.index(i))
+    return corr1
 ''''''''''''''''''''''''
 '''导入数据集'''
 ''''''''''''''''''''''''
